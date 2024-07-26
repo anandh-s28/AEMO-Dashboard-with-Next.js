@@ -3,30 +3,35 @@ import StateDemandChart from "@/components/Charts/Demand";
 export default function Page() {
   return (
     <div>
-      <h1 className="p-10 text-3xl font-medium tracking-tight">
+      <h1 className="p-10 text-4xl font-light tracking-tight">
         Electricity Generation in Australia
       </h1>
-      <div className=" p-10">
+      <div className="grid grid-cols-3 gap-5 pl-10 pr-10">
         <StateDemandChart
           tableName="electricity_data_NSW1"
-          title="Electricity Demand in NSW"
+          title="New South Wales"
+          color="hsl(var(--chart-1))"
         />
-        {/* <StateDemandChart
+        <StateDemandChart
           tableName="electricity_data_VIC1"
-          title="Electricity Demand in Victoria"
+          title="Victoria"
+          color="hsl(var(--chart-4))"
         />
         <StateDemandChart
           tableName="electricity_data_TAS1"
-          title="Electricity Demand in Tasmania"
+          title="Tasmania"
+          color="hsl(var(--chart-2))"
         />
         <StateDemandChart
           tableName="electricity_data_SA1"
-          title="Electricity Demand in South Australia"
+          title="South Australia"
+          color="hsl(var(--chart-3))"
         />
         <StateDemandChart
           tableName="electricity_data_QLD1"
-          title="Electricity Demand in Queensland"
-        /> */}
+          title="Queensland"
+          color="hsl(var(--chart-5))"
+        />
       </div>
     </div>
   );

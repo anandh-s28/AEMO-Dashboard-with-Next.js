@@ -30,21 +30,17 @@ interface ChartData {
 interface StateDemandChartProps {
   tableName: string;
   title: string;
+  color?: string;
 }
 
-const chartConfig: ChartConfig = {
-  demand: {
-    label: "Total Demand",
-    color: "hsl(var(--chart-1))",
-  },
-  RRP: {
-    label: "Spot Price",
-    color: "hsl(var(--chart-2))",
-  },
-};
-
-function StateDemandChart({ tableName, title }: StateDemandChartProps) {
+function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
   const [chartData, setChartData] = useState<ChartData[]>([]);
+  const chartConfig: ChartConfig = {
+    demand: {
+      label: "Total Demand",
+      color: color,
+    },
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,7 +79,7 @@ function StateDemandChart({ tableName, title }: StateDemandChartProps) {
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>
-          Total Demand and Spot Price of Electricity
+          Total Demand of Electricity in {title}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -92,7 +88,7 @@ function StateDemandChart({ tableName, title }: StateDemandChartProps) {
             accessibilityLayer
             data={chartData}
             margin={{
-              left: -20,
+              left: -10,
               right: 12,
             }}
           >
@@ -102,7 +98,7 @@ function StateDemandChart({ tableName, title }: StateDemandChartProps) {
               tickLine={true}
               axisLine={false}
               tickMargin={5}
-              tickFormatter={(value) => value.slice(0, 10)}
+              tickFormatter={(value) => value.slice(0, 5)}
             />
             <YAxis
               tickLine={false}
