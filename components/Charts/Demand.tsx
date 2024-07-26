@@ -17,15 +17,14 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-// Configure your Supabase client
-const supabaseUrl = "https://your-supabase-url.supabase.co";
-const supabaseKey = "your-supabase-key";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface ChartData {
   date: string;
-  total_demand: number;
-  rrp: number;
+  TOTALDEMAND: number;
+  //RRP: number;
 }
 
 interface StateDemandChartProps {
@@ -38,7 +37,7 @@ const chartConfig: ChartConfig = {
     label: "Total Demand",
     color: "hsl(var(--chart-1))",
   },
-  rrp: {
+  RRP: {
     label: "Spot Price",
     color: "hsl(var(--chart-2))",
   },
@@ -50,21 +49,20 @@ function StateDemandChart({ tableName, title }: StateDemandChartProps) {
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase
-        .from<ChartData>(tableName)
-        .select("date, total_demand, rrp")
-        .order("date", { ascending: false })
-        .limit(10);
+        .from(tableName)
+        .select("SETTLEMENTDATE, TOTALDEMAND")
+        .order("SETTLEMENTDATE", { ascending: false })
+        .limit(5);
 
       if (error) {
         console.error("Error fetching data:", error);
         return;
       }
 
-      // Format the data for the chart
       const formattedData = (data || []).reverse().map((item) => ({
-        date: new Date(item.date).toLocaleString(), // Format the date as needed
-        total_demand: item.total_demand,
-        rrp: item.rrp,
+        date: new Date(item.SETTLEMENTDATE).toLocaleString(),
+        TOTALDEMAND: item.TOTALDEMAND,
+        //RRP: item.RRP,
       }));
 
       setChartData(formattedData);
@@ -101,32 +99,24 @@ function StateDemandChart({ tableName, title }: StateDemandChartProps) {
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
-              tickLine={false}
+              tickLine={true}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickMargin={5}
+              tickFormatter={(value) => value.slice(0, 10)}
             />
             <YAxis
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
+              tickMargin={5}
               tickCount={3}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Area
-              dataKey="total_demand"
+              dataKey="TOTALDEMAND"
               type="natural"
               fill="var(--color-demand)"
               fillOpacity={0.4}
               stroke="var(--color-demand)"
-              stackId="a"
-            />
-            <Area
-              dataKey="rrp"
-              type="natural"
-              fill="var(--color-rrp)"
-              fillOpacity={0.4}
-              stroke="var(--color-rrp)"
               stackId="a"
             />
           </AreaChart>
