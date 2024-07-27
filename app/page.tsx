@@ -1,4 +1,6 @@
 import StateDemandChart from "@/components/Charts/Demand";
+import { ChartSelection } from "@/components/ChartSelection";
+import { Dashboard } from "@/components/Dashboard";
 
 export default function Page() {
   return (
@@ -6,8 +8,11 @@ export default function Page() {
       <h1 className="p-10 text-4xl font-light tracking-tight">
         Electricity Generation in Australia
       </h1>
+      <div className="pl-10">
+        <Dashboard />
+      </div>
       <div className="grid grid-cols-3 gap-5 pl-10 pr-10">
-        <StateDemandChart
+        {/* <StateDemandChart
           tableName="electricity_data_NSW1"
           title="New South Wales"
           color="hsl(var(--chart-1))"
@@ -31,7 +36,7 @@ export default function Page() {
           tableName="electricity_data_QLD1"
           title="Queensland"
           color="hsl(var(--chart-5))"
-        />
+        /> */}
       </div>
     </div>
   );
