@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import useSWR from "swr";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   Card,
@@ -17,14 +16,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 interface ChartData {
   date: string;
-  TOTALDEMAND: number;
-  //RRP: number;
+  total_demand: number;
+  rrp: number;
 }
 
 interface StateDemandChartProps {
@@ -33,54 +28,36 @@ interface StateDemandChartProps {
   color?: string;
 }
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
-  const [chartData, setChartData] = useState<ChartData[]>([]);
+  const { data: chartData, error } = useSWR<ChartData[]>(
+    `/api/fetchStateData?state=${tableName}`,
+    fetcher,
+    {
+      refreshInterval: 300000, // Refresh every 5 minutes
+    }
+  );
+
+  if (error) return <div>Error loading data</div>;
+  if (!chartData) return <div>Loading...</div>;
+
   const chartConfig: ChartConfig = {
     demand: {
       label: "Total Demand",
-      color: color,
+      color: color || "hsl(var(--chart-2))",
+    },
+    rrp: {
+      label: "Spot Price",
+      color: "hsl(var(--chart-1))",
     },
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from(tableName)
-        .select("SETTLEMENTDATE, TOTALDEMAND")
-        .order("SETTLEMENTDATE", { ascending: false })
-        .limit(5);
-
-      if (error) {
-        console.error("Error fetching data:", error);
-        return;
-      }
-
-      const formattedData = (data || []).reverse().map((item) => ({
-        date: new Date(item.SETTLEMENTDATE).toLocaleString(),
-        TOTALDEMAND: item.TOTALDEMAND,
-        //RRP: item.RRP,
-      }));
-
-      setChartData(formattedData);
-    };
-
-    // Fetch data initially
-    fetchData();
-
-    // Fetch data every 5 minutes
-    const intervalId = setInterval(fetchData, 300000); // 300000ms = 5 minutes
-
-    // Cleanup interval on component unmount
-    return () => clearInterval(intervalId);
-  }, [tableName]);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>
-          Total Demand of Electricity in {title}
-        </CardDescription>
+        <CardDescription>Total Electricity Demand in {title}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -88,31 +65,39 @@ function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
             accessibilityLayer
             data={chartData}
             margin={{
-              left: -10,
+              left: -20,
               right: 12,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
-              tickLine={true}
+              tickLine={false}
               axisLine={false}
-              tickMargin={5}
-              tickFormatter={(value) => value.slice(0, 5)}
+              tickMargin={8}
+              tickFormatter={(value) => value.slice(0, 4)}
             />
             <YAxis
               tickLine={false}
               axisLine={false}
-              tickMargin={5}
+              tickMargin={8}
               tickCount={3}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Area
-              dataKey="TOTALDEMAND"
+              dataKey="total_demand"
               type="natural"
-              fill="var(--color-demand)"
+              fill={chartConfig.demand.color}
               fillOpacity={0.4}
-              stroke="var(--color-demand)"
+              stroke={chartConfig.demand.color}
+              stackId="a"
+            />
+            <Area
+              dataKey="rrp"
+              type="natural"
+              fill={chartConfig.demand.color}
+              fillOpacity={0.4}
+              stroke={chartConfig.demand.color}
               stackId="a"
             />
           </AreaChart>
