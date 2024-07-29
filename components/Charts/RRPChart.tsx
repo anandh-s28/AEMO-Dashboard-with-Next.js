@@ -18,7 +18,6 @@ import {
 
 interface ChartData {
   date: string;
-  total_demand: number;
   rrp: number;
 }
 
@@ -30,7 +29,7 @@ interface StateDemandChartProps {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
+function StateRRPChart({ tableName, title, color }: StateDemandChartProps) {
   const { data: chartData, error } = useSWR<ChartData[]>(
     `/api/fetchStateData?state=${tableName}`,
     fetcher,
@@ -43,9 +42,9 @@ function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
   if (!chartData) return <div>Loading...</div>;
 
   const chartConfig: ChartConfig = {
-    demand: {
-      label: "Total Demand",
-      color: color || "hsl(var(--chart-2))",
+    rrp: {
+      label: "Spot Price",
+      color: color || "hsl(var(--chart-1))",
     },
   };
 
@@ -53,7 +52,7 @@ function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>Total Electricity Demand in {title}</CardDescription>
+        <CardDescription>Price of Electricity in {title}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -81,11 +80,11 @@ function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Area
-              dataKey="total_demand"
+              dataKey="rrp"
               type="natural"
-              fill={chartConfig.demand.color}
+              fill={chartConfig.rrp.color}
               fillOpacity={0.4}
-              stroke={chartConfig.demand.color}
+              stroke={chartConfig.rrp.color}
               stackId="a"
             />
           </AreaChart>
@@ -95,4 +94,4 @@ function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
   );
 }
 
-export default StateDemandChart;
+export default StateRRPChart;

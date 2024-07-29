@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 
   const { data, error } = await supabase
   .from(state)
-  .select("SETTLEMENTDATE, TOTALDEMAND")
+  .select("SETTLEMENTDATE, TOTALDEMAND, RRP")
   .order("SETTLEMENTDATE", { ascending: false })
   .limit(5);
 
@@ -26,6 +26,7 @@ export async function GET(request: Request) {
   const formattedData = (data || []).reverse().map((item) => ({
     date: new Date(item.SETTLEMENTDATE).toLocaleString(), 
     total_demand: item.TOTALDEMAND,
+    rrp: item.RRP
   }));
 
   return NextResponse.json(formattedData);
