@@ -52,7 +52,6 @@ function StateRRPChart({ tableName, title, color }: StateDemandChartProps) {
     <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
-        <CardDescription>Price of Electricity in {title}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -60,7 +59,7 @@ function StateRRPChart({ tableName, title, color }: StateDemandChartProps) {
             accessibilityLayer
             data={chartData}
             margin={{
-              left: -20,
+              left: -15,
               right: 12,
             }}
           >

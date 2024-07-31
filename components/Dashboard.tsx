@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ChartSelection } from "./ChartSelection";
 import StateDemandChart from "./Charts/Demand";
 import StateRRPChart from "./Charts/RRPChart";
+import DemandPriceSummaryCard from "./Summary Cards/DemandRRPSummary";
 
 // Define the type for the state configuration
 interface StateConfig {
@@ -49,19 +50,28 @@ export function Dashboard() {
 
   return (
     <div>
+      <h1 className="mb-2 text-2xl tracking-tight">Price and Demand</h1>
       <ChartSelection onSelect={handleStateSelect} />
+      {selectedState === null && (
+        <div className="mt-5">Please select a state to view data</div>
+      )}
       {selectedState && stateConfig[selectedState] && (
-        <div className="grid grid-cols-2 mt-5 gap-5">
-          <StateDemandChart
-            tableName={selectedState}
-            title={stateConfig[selectedState].titleDemand}
-            color={stateConfig[selectedState].color}
-          />
-          <StateRRPChart
-            tableName={selectedState}
-            title={stateConfig[selectedState].titleRRP}
-            color={stateConfig[selectedState].color}
-          />
+        <div>
+          <div>
+            <DemandPriceSummaryCard tableName={selectedState} />
+          </div>
+          <div className="grid grid-cols-2 mt-5 gap-5">
+            <StateDemandChart
+              tableName={selectedState}
+              title={stateConfig[selectedState].titleDemand}
+              color={stateConfig[selectedState].color}
+            />
+            <StateRRPChart
+              tableName={selectedState}
+              title={stateConfig[selectedState].titleRRP}
+              color={stateConfig[selectedState].color}
+            />
+          </div>
         </div>
       )}
     </div>
