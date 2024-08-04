@@ -56,7 +56,7 @@ export default function DemandPriceSummaryCard({
           <CardDescription>Current Price</CardDescription>
         </CardHeader>
         <CardContent>
-          <CardTitle>${summary.rrp}</CardTitle>
+          <CardTitle>${summary.rrp}/MWh</CardTitle>
         </CardContent>
       </Card>
     </div>

@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       .from("fuel_types")
       .select("FUEL_TYPE, SUPPLY").eq("STATE",state)
       .order("DATETIME", { ascending: false })
-      .limit(6); 
+      .limit(10); 
   
     if (error) {
       return NextResponse.json({ error: 'Error fetching data' }, { status: 500 });
