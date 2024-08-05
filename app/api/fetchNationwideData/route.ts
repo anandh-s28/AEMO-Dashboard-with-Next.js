@@ -7,9 +7,26 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function POST(request: Request) {
     const { data, error } = await supabase
-    .rpc('get_aggregation');
+      .rpc('get_aggregation');
+
     if (error) {
         return NextResponse.json({ error: 'Error fetching data' }, { status: 500 });
     }
-    return NextResponse.json(data);
+
+    const formattedData = data.reduce((acc: any[], curr: any) => {
+        const date = curr.DATETIME
+        const existingEntry = acc.find(item => item.date === date);
+
+        if (existingEntry) {
+            existingEntry[curr.FUEL_CATEGORY.replace(/\s+/g, '')] = curr.total_generation;
+        } else {
+            acc.push({
+                date,
+                [curr.FUEL_CATEGORY.replace(/\s+/g, '')]: curr.total_generation,
+            });
+        }
+        return acc;
+    }, []);
+
+    return NextResponse.json(formattedData);
 }

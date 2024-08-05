@@ -5,6 +5,7 @@ import StateDemandChart from "./Charts/Demand";
 import StateRRPChart from "./Charts/RRPChart";
 import DemandPriceSummaryCard from "./Summary Cards/DemandRRPSummary";
 import { FuelSupplyBarChart } from "./Charts/FuelType";
+import { NEMRadial } from "./Charts/Nationwide";
 
 interface StateConfig {
   state: string;
@@ -55,11 +56,10 @@ export function Dashboard() {
 
   return (
     <div>
+      <h1>Renewable Energy Penetration</h1>
+      <NEMRadial />
       <h1 className="mb-2 text-2xl tracking-tight">Price and Demand</h1>
       <ChartSelection onSelect={handleStateSelect} />
-      {selectedState === null && (
-        <div className="mt-5">Please select a state to view data</div>
-      )}
       {selectedState && stateConfig[selectedState] && (
         <div>
           <div>
