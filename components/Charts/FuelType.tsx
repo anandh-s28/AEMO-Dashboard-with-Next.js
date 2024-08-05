@@ -17,7 +17,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-// Define the chartConfig for fuel types directly
 const chartConfig = {
   liquid_fuel: {
     label: "Liquid Fuel",
@@ -81,42 +80,39 @@ export function FuelSupplyBarChart({ state }: { state: string }) {
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Fuel Supply by Type</CardTitle>
-        <CardDescription>Latest Fuel Supply Data</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart
-            accessibilityLayer
-            data={formattedData}
-            layout="vertical"
-            margin={{
-              left: 0,
-            }}
-          >
-            <YAxis
-              dataKey="fuel_type"
-              type="category"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-            />
-            <XAxis dataKey="Supply" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar dataKey="Supply" layout="vertical" radius={5} />
-          </BarChart>
-        </ChartContainer>
-      </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
-          Showing total fuel supply for the latest available data
-        </div>
-      </CardFooter>
-    </Card>
+    <div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Fuel Supply by Type</CardTitle>
+          <CardDescription>Latest Fuel Supply Data</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <BarChart
+              accessibilityLayer
+              data={formattedData}
+              layout="vertical"
+              margin={{
+                left: 0,
+              }}
+            >
+              <YAxis
+                dataKey="fuel_type"
+                type="category"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+              />
+              <XAxis dataKey="Supply" type="number" hide />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Bar dataKey="Supply" layout="vertical" radius={5} />
+            </BarChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
