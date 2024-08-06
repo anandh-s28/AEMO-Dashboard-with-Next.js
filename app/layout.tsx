@@ -18,9 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <body className="bg-neutral-950 text-white">
+      <body className="bg-neutral-950">
         <ThemeProvider attribute="class" defaultTheme="system">
-          <main className="min-h-screen flex flex-col">{children}</main>
+          <main className="min-h-screen flex flex-col text-white">
+            {children}
+          </main>
         </ThemeProvider>
       </body>
     </html>

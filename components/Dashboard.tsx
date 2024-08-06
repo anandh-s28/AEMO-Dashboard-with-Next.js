@@ -56,10 +56,13 @@ export function Dashboard() {
 
   return (
     <div>
-      <h1>Renewable Energy Penetration</h1>
+      <h1 className="text-xl">Renewable vs Non-Renewable</h1>
       <NEMRadial />
       <h1 className="mb-2 text-2xl tracking-tight">Price and Demand</h1>
       <ChartSelection onSelect={handleStateSelect} />
+      {!selectedState && (
+        <p className="pt-2 text-sm">Select a state to view data</p>
+      )}
       {selectedState && stateConfig[selectedState] && (
         <div>
           <div>

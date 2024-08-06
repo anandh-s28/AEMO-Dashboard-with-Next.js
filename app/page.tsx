@@ -7,8 +7,8 @@ export default function Page() {
         Electricity Generation in Australia
       </h1>
       <p className="tracking-tight mb-5">
-        Energy generation data for the National Electricity Market (NEM) in
-        Australia. Select a state to view data.
+        This is a simple dashboard app visualising energy generation data from
+        the National Electricity Market (NEM) in Australia.
       </p>
       <div>
         <Dashboard />

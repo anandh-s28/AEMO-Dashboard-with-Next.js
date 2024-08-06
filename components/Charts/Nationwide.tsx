@@ -5,6 +5,7 @@ import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -55,12 +56,12 @@ export function NEMRadial() {
   return (
     <div className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Total Supply by Resource Type</CardTitle>
+        <CardDescription>Total Supply by Resource Type</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square w-full max-w-[250px]"
+          className="mx-auto aspect-square w-full max-w-[250px] max-h-[220px]"
         >
           <RadialBarChart
             data={[chartData[0]]}
@@ -81,14 +82,14 @@ export function NEMRadial() {
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) - 16}
-                          className="text-2xl font-light"
+                          className="font-bold text-xl fill-current"
                         >
                           {totalGeneration.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 4}
-                          className="text-white"
+                          className="fill-current"
                         >
                           MW
                         </tspan>
