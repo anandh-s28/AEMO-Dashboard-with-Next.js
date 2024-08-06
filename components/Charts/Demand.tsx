@@ -2,7 +2,13 @@
 
 import useSWR from "swr";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
@@ -37,8 +43,8 @@ function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
   if (!chartData) return <div>Loading...</div>;
 
   const chartConfig: ChartConfig = {
-    demand: {
-      label: "Total Demand",
+    total_demand: {
+      label: "Demand",
       color: color || "hsl(var(--chart-2))",
     },
   };
@@ -77,13 +83,14 @@ function StateDemandChart({ tableName, title, color }: StateDemandChartProps) {
               <Area
                 dataKey="total_demand"
                 type="natural"
-                fill={chartConfig.demand.color}
+                fill={chartConfig.total_demand.color}
                 fillOpacity={0.4}
-                stroke={chartConfig.demand.color}
+                stroke={chartConfig.total_demand.color}
                 stackId="a"
               />
             </AreaChart>
           </ChartContainer>
+          <CardFooter></CardFooter>
         </CardContent>
       </Card>
     </div>

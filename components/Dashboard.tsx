@@ -6,6 +6,7 @@ import StateRRPChart from "./Charts/RRPChart";
 import DemandPriceSummaryCard from "./Summary Cards/DemandRRPSummary";
 import { FuelSupplyBarChart } from "./Charts/FuelType";
 import { NEMRadial } from "./Charts/Nationwide";
+import { NEMFuelSupplyBarChart } from "./Summary Cards/FuelType";
 
 interface StateConfig {
   state: string;
@@ -56,33 +57,38 @@ export function Dashboard() {
 
   return (
     <div>
-      <h1 className="text-xl">Renewable vs Non-Renewable</h1>
-      <NEMRadial />
-      <h1 className="mb-2 text-2xl tracking-tight">Price and Demand</h1>
-      <ChartSelection onSelect={handleStateSelect} />
-      {!selectedState && (
-        <p className="pt-2 text-sm">Select a state to view data</p>
-      )}
-      {selectedState && stateConfig[selectedState] && (
-        <div>
+      <h1 className="text-xl">Nationwide Generation Summary</h1>
+      <div className="grid grid-cols-2 gap-2">
+        <NEMRadial />
+        <NEMFuelSupplyBarChart />
+      </div>
+      <div className="pb-10">
+        <h1 className="mb-2 text-2xl tracking-tight">Price and Demand</h1>
+        <ChartSelection onSelect={handleStateSelect} />
+        {!selectedState && (
+          <p className="pt-2 text-sm">Select a state to view data</p>
+        )}
+        {selectedState && stateConfig[selectedState] && (
           <div>
-            <DemandPriceSummaryCard tableName={selectedState} />
+            <div>
+              <DemandPriceSummaryCard tableName={selectedState} />
+            </div>
+            <div className="grid grid-cols-3 mt-5 gap-5">
+              <StateDemandChart
+                tableName={selectedState}
+                title={stateConfig[selectedState].titleDemand}
+                color={stateConfig[selectedState].color}
+              />
+              <StateRRPChart
+                tableName={selectedState}
+                title={stateConfig[selectedState].titleRRP}
+                color={stateConfig[selectedState].color}
+              />
+              <FuelSupplyBarChart state={stateConfig[selectedState].state} />
+            </div>
           </div>
-          <div className="grid grid-cols-3 mt-5 gap-5">
-            <StateDemandChart
-              tableName={selectedState}
-              title={stateConfig[selectedState].titleDemand}
-              color={stateConfig[selectedState].color}
-            />
-            <StateRRPChart
-              tableName={selectedState}
-              title={stateConfig[selectedState].titleRRP}
-              color={stateConfig[selectedState].color}
-            />
-            <FuelSupplyBarChart state={stateConfig[selectedState].state} />
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

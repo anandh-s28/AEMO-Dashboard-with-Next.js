@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardDescription,
 } from "../ui/card";
+import { Skeleton } from "../ui/skeleton";
 
 interface Summary {
   demand: number;
@@ -36,7 +37,11 @@ export default function DemandPriceSummaryCard({
 
   if (!summary) {
     console.log("Loading data...");
-    return <div>Loading...</div>;
+    return (
+      <div className="grid grid-cols-2 gap-5 p-15 mt-5">
+        <Skeleton />
+      </div>
+    );
   }
 
   console.log("Summary data:", summary);

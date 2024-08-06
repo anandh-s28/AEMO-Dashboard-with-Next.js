@@ -16,6 +16,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { Skeleton } from "../ui/skeleton";
 
 const chartConfig = {
   liquid_fuel: {
@@ -68,7 +69,12 @@ export function FuelSupplyBarChart({ state }: { state: string }) {
   );
 
   if (error) return <div>Error loading data</div>;
-  if (!chartData) return <div>Loading...</div>;
+  if (!chartData)
+    return (
+      <div className="grid grid-cols-2 gap-5 p-15 mt-5">
+        <Skeleton />
+      </div>
+    );
 
   const formattedData = chartData.map((item: any) => {
     const key = item.fuel_type.toLowerCase().replace(/\s+/g, "_");
@@ -78,7 +84,6 @@ export function FuelSupplyBarChart({ state }: { state: string }) {
       fill: chartConfig[key as keyof typeof chartConfig]?.color,
     };
   });
-
   return (
     <div>
       <Card>

@@ -26,8 +26,8 @@
     --chart-6: 450 80% 60%;
     --chart-7: 120 60% 50%;
     --chart-8: 60 60% 50%;
-    --chart-9: 0 0% 100%;
-    --chart-10: 180 50% 50%;
+    --chart-9: 0, 80%, 59%;
+    --chart-10: 288, 80%, 59%;
   }
   @layer utilities {
     .text-white-custom {
